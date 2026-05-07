@@ -23,7 +23,11 @@ START_YEAR = 1940
 END_YEAR   = 2024
 
 CIUDADES = {
-    "Vitoria":  {"lat": 42.846, "lon": -2.672},
+    "Bilbao":         {"lat": 43.263, "lon": -2.935},
+    "San Sebastian":  {"lat": 43.318, "lon": -1.981},
+    "Vitoria":        {"lat": 42.846, "lon": -2.672},
+    "Pamplona":       {"lat": 42.812, "lon": -1.645},
+    "Bayona":         {"lat": 43.493, "lon": -1.474},
 }
 
 VARIABLES  = "temperature_2m_mean,temperature_2m_min,temperature_2m_max,precipitation_sum"
