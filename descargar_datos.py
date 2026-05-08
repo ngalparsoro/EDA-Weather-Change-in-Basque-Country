@@ -14,6 +14,7 @@ import requests
 import pandas as pd
 import time
 from tqdm import tqdm
+from variables import CIUDADES
 
 # ============================================================
 # CONFIGURACIÓN
@@ -21,14 +22,6 @@ from tqdm import tqdm
 
 START_YEAR = 1940
 END_YEAR   = 2024
-
-CIUDADES = {
-    "Bilbao":         {"lat": 43.263, "lon": -2.935},
-    "San Sebastian":  {"lat": 43.318, "lon": -1.981},
-    "Vitoria":        {"lat": 42.846, "lon": -2.672},
-    "Pamplona":       {"lat": 42.812, "lon": -1.645},
-    "Bayona":         {"lat": 43.493, "lon": -1.474},
-}
 
 VARIABLES  = "temperature_2m_mean,temperature_2m_min,temperature_2m_max,precipitation_sum"
 BLOQUE     = 10    # años por petición
@@ -113,7 +106,7 @@ for nombre, coords in CIUDADES.items():
 
     if df_ciudad is not None:
         nombre_archivo = f"clima_{nombre.lower().replace('ñ','n').replace('ï','i')}.csv"
-        df_ciudad.to_csv(nombre_archivo, index=False, encoding="utf-8")
+        df_ciudad.to_csv(f'data/{nombre_archivo}', index=False, encoding="utf-8")
         archivos_guardados.append(nombre_archivo)
         print(f"  Guardado: {nombre_archivo}  ({len(df_ciudad):,} filas)")
 
