@@ -1,5 +1,5 @@
 import pandas as pd
-from variables import csv_list, dfs
+from utils.variables import dfs
 
 def cargar_datos(csv_list):
     for csv in csv_list:

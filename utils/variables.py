@@ -1,7 +1,7 @@
 import pandas as pd
 
-csv_list = ['data/clima_donostia.csv', 'data/clima_bilbao.csv', 'data/clima_baiona.csv', 
-            'data/clima_irunea.csv', 'data/clima_vitoria.csv', 'data/clima_arrasate.csv',
+csv_list = ['data/clima_donostia.csv', 'data/clima_bilbo.csv', 'data/clima_baiona.csv', 
+            'data/clima_iruna.csv', 'data/clima_gasteiz.csv', 'data/clima_arrasate.csv',
             'data/clima_maule.csv']
 
 dfs = {}
