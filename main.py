@@ -30,3 +30,4 @@ if __name__ == "__main__":
     temperaturas_extremas()
 
     # Paso 7 : Estacionalidad marcada
+    

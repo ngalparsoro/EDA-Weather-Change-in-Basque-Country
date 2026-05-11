@@ -5,7 +5,7 @@ import matplotlib.ticker as ticker
 from utils.variables import csv_list, dfs
 
 
-def diferencias_ciudades():
+def diferencias_tempmean_ciudades():
 
     # ───────────────────────────────────────────────
     # VARIABLE A COMPARAR
