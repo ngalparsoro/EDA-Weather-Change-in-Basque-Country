@@ -2,22 +2,39 @@
 Análisis de precipitaciones — H2 (reducción y extremos)
 Devuelve DataFrames listos para graficar, sin ningún plt.
 """
+import numpy as np
 import pandas as pd
-from scripts.variables import CIUDADES
+from scipy.stats import linregress
+import pymannkendall as mk
+from scripts.variables import CIUDADES, UMBRAL_LLUVIA_INTENSA, UMBRAL_RACHA_SECA
 
 
 def calcular_precipitacion_anual(ciudad) -> dict:
-    """Precipitación total anual."""
+    """
+    Precipitación total anual con tendencia lineal y test Mann-Kendall.
+    """
     df    = ciudad.df
     serie = df.groupby("año")["precipitation_sum"].sum()
+    años  = np.array(serie.index.tolist())
+    precip = serie.values
+
+    slope, intercept, r_value, p_value, _ = linregress(años, precip)
+    mk_result = mk.original_test(precip)
+
     return {
-        "ciudad": ciudad,
-        "años":   serie.index.tolist(),
-        "precip": serie.values.tolist(),
+        "ciudad":    ciudad,
+        "años":      años.tolist(),
+        "precip":    precip.tolist(),
+        "tendencia": (slope * años + intercept).tolist(),
+        "slope":     slope,
+        "p_value":   p_value,
+        "r2":        r_value ** 2,
+        "mk_trend":  mk_result.trend,
+        "mk_p":      mk_result.p,
     }
 
 
-def calcular_dias_intensos(ciudad, umbral: float = 30.0) -> dict:
+def calcular_dias_intensos(ciudad, umbral: float = UMBRAL_LLUVIA_INTENSA) -> dict:
     """Días con precipitación > umbral mm por año, rellenando años vacíos con 0."""
     df      = ciudad.df
     serie   = df[df["precipitation_sum"] > umbral].groupby("año").size()

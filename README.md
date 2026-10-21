@@ -2,6 +2,8 @@
 
 Análisis exploratorio de datos meteorológicos en 7 ciudades de Euskal Herria usando datos de reanálisis ERA5.
 
+**📊 Presentación web:** https://ngalparsoro.github.io/EDA-Weather-Change-in-Basque-Country/
+
 ## Ciudades
 
 | Ciudad | Tipo |
@@ -21,16 +23,24 @@ Análisis exploratorio de datos meteorológicos en 7 ciudades de Euskal Herria u
 ## Estructura
 
 ```
-├── data/               # CSVs por ciudad (ERA5 vía Open-Meteo)
-├── img/                # Gráficos generados
-├── notebooks/          # Análisis por hipótesis + Memoria
+├── data/                       # CSVs por ciudad (ERA5 vía Open-Meteo)
+├── docs/                       # Presentación web (GitHub Pages)
+├── img/                        # Gráficos generados, por análisis
+├── notebooks/                  # Limpieza de datos y análisis por hipótesis (H1–H6)
 ├── scripts/
-│   ├── analisis/       # Módulos de cálculo
-│   ├── graficos/       # Módulos de visualización
+│   ├── analisis/               # Módulos de cálculo
+│   ├── graficos/               # Módulos de visualización
 │   ├── variables.py
 │   ├── funciones_variables.py
+│   ├── validacion.py
 │   └── descargar_datos.py
-└── main.py
+├── Intro.ipynb                 # Introducción
+├── Memoria.ipynb               # Memoria del proyecto
+├── EDA_CambioClimaticoEuskalHerria.html   # Presentación (fuente de docs/)
+├── EDA_Euskal_Herria.pptx/.pdf # Presentación en diapositivas
+├── main.py                     # Análisis completo
+├── regenerar_graficos.py       # Regenera todos los gráficos de img/
+└── exportar_presentacion.py    # Genera docs/ a partir de la presentación
 ```
 
 ## Uso
@@ -45,8 +55,12 @@ python scripts/descargar_datos.py
 # Ejecutar análisis completo
 python main.py
 
+# Regenerar los gráficos y la presentación web (docs/)
+python regenerar_graficos.py
+python exportar_presentacion.py
+
 # O abrir la memoria directamente
-jupyter notebook notebooks/Memoria.ipynb
+jupyter notebook Memoria.ipynb
 ```
 
 ## Datos

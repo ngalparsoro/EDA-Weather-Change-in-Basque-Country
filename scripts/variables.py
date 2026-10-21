@@ -5,6 +5,25 @@ import math
 # ── Rango temporal ─────────────────────────────────────────────────────────────
 AÑO_INICIO = 1940
 AÑO_FIN    = 2025
+WINDOW     = 10   # años para medias móviles
+
+# ── Umbrales climáticos centralizados ─────────────────────────────────────────
+UMBRAL_CALOR             = 35.0   # Tmax > 35°C — día extremo
+UMBRAL_CALOR_MODERADO    = 30.0   # Tmax > 30°C — día caluroso
+UMBRAL_LLUVIA_INTENSA    = 30.0   # Precipitación > 30 mm — día intenso
+UMBRAL_RACHA_SECA        = 1.0    # Precipitación < 1 mm — día seco
+UMBRAL_VERANO            = 20.0   # Tmedia > 20°C — día de verano meteorológico
+UMBRAL_NOCHE_TROPICAL    = 20.0   # Tmin >= 20°C — noche tropical
+UMBRAL_NOCHE_CALIDA      = 25.0   # Tmin >= 25°C — noche muy cálida
+UMBRAL_VIENTO_FUERTE     = 50.0   # km/h — viento fuerte (Beaufort 7)
+UMBRAL_VIENTO_MUY_FUERTE = 75.0   # km/h — viento muy fuerte (Beaufort 9)
+
+# ── Períodos históricos para comparativas ─────────────────────────────────────
+PERIODOS_HISTORICOS = {
+    "1940–1979": (1940, 1979),
+    "1980–2009": (1980, 2009),
+    "2010–2025": (2010, 2025),
+}
 
 # ── Costa Cantábrica/Atlántica ─────────────────────────────────────────────────
 _COSTA = [
@@ -28,11 +47,12 @@ def _haversine(lat1, lon1, lat2, lon2):
 
 # ── Clase Ciudad ───────────────────────────────────────────────────────────────
 class Ciudad:
-    def __init__(self, nombre: str, lat: float, lon: float, color: str):
+    def __init__(self, nombre: str, lat: float, lon: float, color: str, altitud: int = 0):
         self.nombre   = nombre
         self.lat      = lat
         self.lon      = lon
         self.color    = color
+        self.altitud  = altitud   # metros sobre el nivel del mar
         self.dist_mar = round(min(_haversine(lat, lon, c[0], c[1]) for c in _COSTA), 1)
         self.df: pd.DataFrame | None = None
 
@@ -51,29 +71,31 @@ class Ciudad:
 
     def __repr__(self):
         cargado = f"{len(self.df):,} filas" if self.df is not None else "sin cargar"
-        return f"Ciudad({self.nombre}, {self.lat}, {self.lon}, {self.dist_mar} km mar, {cargado})"
+        return f"Ciudad({self.nombre}, {self.lat}, {self.lon}, {self.dist_mar} km mar, {self.altitud} m alt, {cargado})"
 
 
 # ── Instancias ─────────────────────────────────────────────────────────────────
 CIUDADES = [
-    Ciudad("bilbo",     43.263, -2.935, "#10B981"),
-    Ciudad("donostia",  43.318, -1.981, "#0EA5E9"),
-    Ciudad("gasteiz",   42.846, -2.672, "#EF4444"),
-    Ciudad("iruna",     42.812, -1.645, "#F59E0B"),
-    Ciudad("baiona",    43.493, -1.474, "#6366F1"),
-    Ciudad("arrasate",  43.079, -2.490, "#8B5CF6"),
-    Ciudad("maule",     43.224, -0.887, "#EC4899"),
+    Ciudad("bilbo",     43.263, -2.935, "#10B981", altitud=19),
+    Ciudad("donostia",  43.318, -1.981, "#0EA5E9", altitud=5),
+    Ciudad("gasteiz",   42.846, -2.672, "#EF4444", altitud=524),
+    Ciudad("iruna",     42.812, -1.645, "#F59E0B", altitud=449),
+    Ciudad("baiona",    43.493, -1.474, "#6366F1", altitud=6),
+    Ciudad("arrasate",  43.079, -2.490, "#8B5CF6", altitud=339),
+    Ciudad("maule",     43.224, -0.887, "#EC4899", altitud=144),
 ]
 
 # ── Directorios de output ──────────────────────────────────────────────────────
 OUTPUT_DIRS = {
-    "temp_30":         Path("img/temp_30"),
-    "temp_media":      Path("img/temp_media"),
-    "precipitacion":   Path("img/precipitacion"),
-    "comp_ciudades":   Path("img/comp_ciudades"),
-    "extremos_35":     Path("img/extremos_35"),
-    "estacionalidad":  Path("img/estacionalidad"),
-    "correlacion_mar": Path("img/correlacion_mar"),
+    "temp_30":             Path("img/temp_30"),
+    "temp_media":          Path("img/temp_media"),
+    "precipitacion":       Path("img/precipitacion"),
+    "comp_ciudades":       Path("img/comp_ciudades"),
+    "extremos_35":         Path("img/extremos_35"),
+    "estacionalidad":      Path("img/estacionalidad"),
+    "correlacion_mar":     Path("img/correlacion_mar"),
+    "viento":              Path("img/viento"),
+    "noches_tropicales":   Path("img/noches_tropicales"),
 }
 
 def crear_dirs():

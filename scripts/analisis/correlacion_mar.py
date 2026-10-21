@@ -5,13 +5,9 @@ Devuelve DataFrames listos para graficar, sin ningún plt.
 import numpy as np
 import pandas as pd
 from scipy import stats
-from scripts.variables import CIUDADES
+from scripts.variables import CIUDADES, PERIODOS_HISTORICOS
 
-PERIODOS = {
-    "1940–1979": (1940, 1979),
-    "1980–2009": (1980, 2009),
-    "2010–2025": (2010, 2025),
-}
+PERIODOS = PERIODOS_HISTORICOS
 
 
 def _metricas_anuales(ciudades) -> pd.DataFrame:
@@ -21,12 +17,13 @@ def _metricas_anuales(ciudades) -> pd.DataFrame:
         df = ciudad.df.copy()
         df["ciudad"]   = ciudad.nombre
         df["dist_mar"] = ciudad.dist_mar
+        df["altitud"]  = ciudad.altitud
         frames.append(df)
 
     data = pd.concat(frames, ignore_index=True)
 
     temp_anual = (
-        data.groupby(["ciudad", "año", "dist_mar"])["temperature_2m_mean"]
+        data.groupby(["ciudad", "año", "dist_mar", "altitud"])["temperature_2m_mean"]
         .mean().reset_index().rename(columns={"temperature_2m_mean": "temp_media"})
     )
     dias_30 = (
@@ -54,14 +51,14 @@ def calcular_resumen_periodos(ciudades=None) -> tuple[pd.DataFrame, pd.DataFrame
     metricas = _metricas_anuales(ciudades)
 
     variab = (
-        metricas.groupby(["ciudad", "dist_mar"])["temp_media"]
+        metricas.groupby(["ciudad", "dist_mar", "altitud"])["temp_media"]
         .std().reset_index().rename(columns={"temp_media": "variabilidad"})
     )
 
     rows = []
     for periodo, (p_ini, p_fin) in PERIODOS.items():
         sub = metricas[metricas["año"].between(p_ini, p_fin)]
-        agg = sub.groupby(["ciudad", "dist_mar"]).agg(
+        agg = sub.groupby(["ciudad", "dist_mar", "altitud"]).agg(
             temp_media=("temp_media", "mean"),
             dias_30=("dias_30", "mean"),
             dias_35=("dias_35", "mean"),
@@ -69,7 +66,7 @@ def calcular_resumen_periodos(ciudades=None) -> tuple[pd.DataFrame, pd.DataFrame
         agg["periodo"] = periodo
         rows.append(agg)
 
-    resumen = pd.concat(rows, ignore_index=True).merge(variab, on=["ciudad", "dist_mar"])
+    resumen = pd.concat(rows, ignore_index=True).merge(variab, on=["ciudad", "dist_mar", "altitud"])
     return resumen, variab
 
 
@@ -83,7 +80,7 @@ def calcular_gradiente_decadas(ciudades=None) -> pd.DataFrame:
     rows = []
     for dec in range(1940, 2026, 10):
         sub = metricas[metricas["año"].between(dec, dec + 9)]
-        med = sub.groupby(["ciudad", "dist_mar"])["temp_media"].mean().reset_index()
+        med = sub.groupby(["ciudad", "dist_mar", "altitud"])["temp_media"].mean().reset_index()
         if len(med) >= 4:
             s, i, r, p, _ = stats.linregress(med["dist_mar"], med["temp_media"])
             rows.append({"decada": f"{dec}s", "slope_10km": s * 10, "r": r, "p": p})

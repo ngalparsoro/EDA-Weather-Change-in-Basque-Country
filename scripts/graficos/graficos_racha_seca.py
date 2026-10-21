@@ -2,10 +2,12 @@
 Gráficos de racha seca máxima anual — refuerzo H2
 """
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scripts.variables import OUTPUT_DIRS, AÑO_INICIO, AÑO_FIN, CIUDADES
-from scripts.funciones_variables import estilo_ax
+from scripts.funciones_variables import estilo_ax, guardar_grafico
+from scripts.analisis.racha_seca import _racha_seca_anual
 
 
 def graficar_racha_seca(resultados: list[dict]) -> None:
@@ -16,7 +18,7 @@ def graficar_racha_seca(resultados: list[dict]) -> None:
         rachas = np.array(r["rachas"])
 
         fig, ax = plt.subplots(figsize=(14, 6))
-        fig.patch.set_facecolor("#F8F9FA")
+        fig.patch.set_facecolor("#0E0E0E")
 
         colors = ["#F59E0B" if d <= 20 else "#EF4444" if d <= 35 else "#7F1D1D"
                   for d in rachas]
@@ -26,16 +28,26 @@ def graficar_racha_seca(resultados: list[dict]) -> None:
                 color="#1E3A8A", linewidth=2.5,
                 label="Media móvil 10 años", zorder=3)
 
+        mk_p     = r.get("mk_p", None)
+        mk_trend = r.get("mk_trend", "")
+        p_val    = r.get("p_value", None)
+
+        trend_label = f"Tendencia ({r['slope'] * 10:+.1f} días/década)"
+        if p_val is not None:
+            trend_label += f", p={p_val:.3f}"
+        if mk_p is not None:
+            sig = "✓" if mk_p < 0.05 else "~"
+            trend_label += f"\nMann-Kendall: {mk_trend} {sig} (p={mk_p:.3f})"
+
         ax.plot(años, r["tendencia"],
-                color="#021B2E", linewidth=1.8, linestyle="--",
-                label=f"Tendencia ({r['slope'] * 10:+.1f} días/década)", zorder=3)
+                color="#D0D0D0", linewidth=1.8, linestyle="--",
+                label=trend_label, zorder=3)
 
         estilo_ax(ax,
                   f"Racha seca máxima anual\n{ciudad.nombre.capitalize()} ({AÑO_INICIO}–{AÑO_FIN})",
                   "Año", f"Días consecutivos sin lluvia (< {r['umbral']} mm)")
-        ax.legend(fontsize=10)
+        ax.legend(fontsize=9)
 
-        # Anotar rachas extremas (> percentil 90)
         umbral_anot = np.percentile(rachas, 90)
         for año, d in zip(años, rachas):
             if d > umbral_anot:
@@ -43,10 +55,7 @@ def graficar_racha_seca(resultados: list[dict]) -> None:
                             textcoords="offset points", ha="center",
                             fontsize=9, color="#7F1D1D", fontweight="bold")
 
-        plt.tight_layout()
-        plt.savefig(OUTPUT_DIRS["precipitacion"] / f"racha_seca_{ciudad.nombre}.png",
-                    dpi=180, bbox_inches="tight")
-        plt.show()
+        guardar_grafico(OUTPUT_DIRS["precipitacion"] / f"racha_seca_{ciudad.nombre}.png")
 
 
 def graficar_racha_comparativa(resultados: list[dict]) -> None:
@@ -55,8 +64,8 @@ def graficar_racha_comparativa(resultados: list[dict]) -> None:
     Permite ver si el interior se seca más que la costa.
     """
     fig, ax = plt.subplots(figsize=(15, 7))
-    fig.patch.set_facecolor("#F8F9FA")
-    ax.set_facecolor("#F8F9FA")
+    fig.patch.set_facecolor("#0E0E0E")
+    ax.set_facecolor("#0E0E0E")
 
     for r in resultados:
         ciudad = r["ciudad"]
@@ -71,10 +80,7 @@ def graficar_racha_comparativa(resultados: list[dict]) -> None:
               "Año", "Días consecutivos sin lluvia")
     ax.legend(title="Ciudades", fontsize=10)
 
-    plt.tight_layout()
-    plt.savefig(OUTPUT_DIRS["precipitacion"] / "racha_seca_comparativa.png",
-                dpi=180, bbox_inches="tight")
-    plt.show()
+    guardar_grafico(OUTPUT_DIRS["precipitacion"] / "racha_seca_comparativa.png")
 
 
 def graficar_violin_rachas_decadas(ciudades: list = None) -> None:
@@ -82,9 +88,6 @@ def graficar_violin_rachas_decadas(ciudades: list = None) -> None:
     Distribución de la racha seca máxima por décadas para todas las ciudades.
     Seaborn: violinplot permite ver cómo cambia la distribución, no solo la media.
     """
-    import pandas as pd
-    from scripts.analisis.racha_seca import _racha_seca_anual
-
     ciudades = ciudades or [c for c in CIUDADES if c.df is not None]
     frames   = []
     for ciudad in ciudades:
@@ -99,27 +102,25 @@ def graficar_violin_rachas_decadas(ciudades: list = None) -> None:
     paleta = {c.nombre.capitalize(): c.color for c in ciudades}
 
     fig, ax = plt.subplots(figsize=(16, 7))
-    fig.patch.set_facecolor("#F8F9FA")
-    ax.set_facecolor("#F8F9FA")
+    fig.patch.set_facecolor("#0E0E0E")
+    ax.set_facecolor("#0E0E0E")
 
     sns.violinplot(
         data=data, x="decada", y="racha", hue="ciudad",
         palette=paleta, inner="quartile",
         linewidth=1.0, ax=ax,
     )
+    ax.set_facecolor("#0E0E0E")
 
     ax.set_title(
         f"Distribución de la racha seca máxima por décadas\n({AÑO_INICIO}–{AÑO_FIN})",
-        fontsize=14, fontweight="bold", color="#021B2E", pad=15,
+        fontsize=14, fontweight="bold", color="#D0D0D0", pad=15,
     )
-    ax.set_xlabel("Década", fontsize=11, color="#021B2E")
-    ax.set_ylabel("Días consecutivos sin lluvia", fontsize=11, color="#021B2E")
-    ax.tick_params(colors="#475569")
-    ax.grid(axis="y", color="#CBD5E1", linestyle="--", alpha=0.6)
+    ax.set_xlabel("Década", fontsize=11, color="#D0D0D0")
+    ax.set_ylabel("Días consecutivos sin lluvia", fontsize=11, color="#D0D0D0")
+    ax.tick_params(colors="#686868")
+    ax.grid(axis="y", color="#303030", linestyle="--", alpha=0.6)
     ax.spines[["top", "right"]].set_visible(False)
     ax.legend(title="Ciudad", fontsize=9, ncol=2)
 
-    plt.tight_layout()
-    plt.savefig(OUTPUT_DIRS["precipitacion"] / "violin_rachas_decadas.png",
-                dpi=180, bbox_inches="tight")
-    plt.show()
+    guardar_grafico(OUTPUT_DIRS["precipitacion"] / "violin_rachas_decadas.png")
