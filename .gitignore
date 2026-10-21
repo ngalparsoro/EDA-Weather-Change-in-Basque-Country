@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Sistema y Office
+.DS_Store
+~$*
+
+# Versión de archivo único de la presentación (se genera con exportar_presentacion.py)
+EDA_CambioClimaticoEuskalHerria_compartir.html
+
+# Material antiguo que se conserva en local, fuera del repositorio
+_archivo/

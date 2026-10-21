@@ -7,6 +7,7 @@ from scripts.analisis import (
     anomalia_termica, racha_seca, olas_calor, clustering_ciudades,
     verano_meteorologico,
 )
+from scripts.analisis.temperaturas import calcular_dias_p90
 from scripts.graficos import (
     graficos_temp, graficos_precip, graficos_estacionalidad, graficos_correlacion,
     graficos_anomalia, graficos_racha_seca, graficos_olas_calor,
@@ -29,7 +30,7 @@ if __name__ == "__main__":
     # H1 — Aumento de temperaturas
     # ══════════════════════════════════════════════════════════════════════════
     datos_temp = temperaturas.calcular_todos()
-    graficos_temp.graficar_dias_30(datos_temp["dias_30"])
+    graficos_temp.graficar_dias_p90(datos_temp["dias_p90"])
     graficos_temp.graficar_temp_media_anual(datos_temp["temp_media"])
     graficos_temp.graficar_heatmap_temp_mensual(CIUDADES)
 
@@ -60,10 +61,11 @@ if __name__ == "__main__":
     graficos_estacionalidad.graficar_comparativa_ciudades(datos_estac["comp_precip"])
     graficos_estacionalidad.graficar_violin_ciudades(CIUDADES)
 
-    # Refuerzo H3: clustering
+    # Refuerzo H3: clustering + PCA biplot
     datos_cluster = clustering_ciudades.calcular_todos()
     graficos_clustering.graficar_dendrograma(datos_cluster)
     graficos_clustering.graficar_heatmap_perfil(datos_cluster)
+    graficos_clustering.graficar_pca_loadings(datos_cluster)
 
     # ══════════════════════════════════════════════════════════════════════════
     # H4 — Frecuencia de temperaturas extremas
@@ -71,10 +73,12 @@ if __name__ == "__main__":
     graficos_temp.graficar_dias_extremos(datos_temp["dias_extremos"])
     graficos_temp.graficar_boxplot_decadas(CIUDADES)
 
-    # Refuerzo H4: olas de calor
+    # Refuerzo H4: olas de calor (absoluto + relativo p95)
     datos_olas = olas_calor.calcular_todos()
     graficos_olas_calor.graficar_duracion_olas(datos_olas)
     graficos_olas_calor.graficar_calendario_olas(datos_olas)
+    datos_olas_p95 = olas_calor.calcular_todos_p95()
+    graficos_olas_calor.graficar_calendario_olas_p95(datos_olas_p95)
 
     # ══════════════════════════════════════════════════════════════════════════
     # H5 — Estacionalidad marcada
@@ -82,16 +86,20 @@ if __name__ == "__main__":
     graficos_estacionalidad.graficar_estacionalidad(datos_estac["estacionalidad"])
     graficos_estacionalidad.graficar_amplitud_termica(datos_estac["amplitud"])
 
-    # Refuerzo H5: longitud del verano
+    # Refuerzo H5: longitud + inicio/fin del verano
     datos_verano = verano_meteorologico.calcular_todos()
     graficos_verano.graficar_longitud_verano(datos_verano)
     graficos_verano.graficar_verano_comparativa(datos_verano)
     graficos_verano.graficar_boxplot_verano_decadas(CIUDADES)
+    datos_inicio_fin = verano_meteorologico.calcular_todos_inicio_fin()
+    graficos_verano.graficar_inicio_fin_verano(datos_inicio_fin)
+    graficos_verano.graficar_inicio_fin_comparativa(datos_inicio_fin)
 
     # ══════════════════════════════════════════════════════════════════════════
     # Correlación distancia al mar
     # ══════════════════════════════════════════════════════════════════════════
     datos_mar = correlacion_mar.calcular_todos()
     graficos_correlacion.graficar_correlacion_paneles(datos_mar)
+    graficos_correlacion.graficar_correlacion_altitud_paneles(datos_mar)
     graficos_correlacion.graficar_gradiente_decadas(datos_mar)
     graficos_correlacion.graficar_pairplot_variables(CIUDADES)

@@ -5,14 +5,8 @@ Recibe los dicts calculados por analisis/precipitaciones.py
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from scripts.variables import OUTPUT_DIRS, AÑO_INICIO, AÑO_FIN
-from scripts.funciones_variables import estilo_ax
-
-WINDOW = 10
-
-
-def _media_movil(valores, window=WINDOW):
-    return np.convolve(np.array(valores), np.ones(window) / window, mode="valid")
+from scripts.variables import OUTPUT_DIRS, AÑO_INICIO, AÑO_FIN, WINDOW
+from scripts.funciones_variables import estilo_ax, media_movil, guardar_grafico
 
 
 # ── H2: Precipitación total anual ─────────────────────────────────────────────
@@ -23,21 +17,35 @@ def graficar_precipitacion_anual(resultados: list[dict]) -> None:
         precip = np.array(r["precip"])
 
         fig, ax = plt.subplots(figsize=(14, 6))
-        fig.patch.set_facecolor("#F8F9FA")
+        fig.patch.set_facecolor("#0E0E0E")
 
         colors = ["#60A5FA" if p >= 1400 else "#93C5FD" if p >= 1000 else "#FCA5A5"
                   for p in precip]
         ax.bar(años, precip, color=colors, alpha=0.75, width=0.8, zorder=2)
 
         if len(precip) >= WINDOW:
-            mm      = _media_movil(precip)
+            mm      = media_movil(precip)
             años_mm = np.array(años)[WINDOW - 1:]
             ax.plot(años_mm, mm, color="#1E3A8A", linewidth=2.5,
                     label=f"Media móvil {WINDOW} años", zorder=3)
 
-        estilo_ax(ax,
-                  f"Precipitación total anual\n{ciudad.nombre.capitalize()} ({AÑO_INICIO}–{AÑO_FIN})",
-                  "Año", "Precipitación anual (mm)")
+        mk_p     = r.get("mk_p", None)
+        mk_trend = r.get("mk_trend", "")
+        slope    = r.get("slope", None)
+        p_val    = r.get("p_value", None)
+
+        subtitulo = ""
+        if slope is not None and p_val is not None:
+            subtitulo = f"Tendencia OLS: {slope * 10:+.1f} mm/década (p={p_val:.3f})"
+        if mk_p is not None:
+            sig = "✓ sig." if mk_p < 0.05 else "~ no sig."
+            subtitulo += f"  |  Mann-Kendall: {mk_trend} {sig} (p={mk_p:.3f})"
+
+        titulo = f"Precipitación total anual\n{ciudad.nombre.capitalize()} ({AÑO_INICIO}–{AÑO_FIN})"
+        if subtitulo:
+            titulo += f"\n{subtitulo}"
+
+        estilo_ax(ax, titulo, "Año", "Precipitación anual (mm)")
         ax.legend(fontsize=10)
 
         for año, p in zip(años, precip):
@@ -46,10 +54,7 @@ def graficar_precipitacion_anual(resultados: list[dict]) -> None:
                             textcoords="offset points", ha="center",
                             fontsize=9, color="#B91C1C", fontweight="bold")
 
-        plt.tight_layout()
-        plt.savefig(OUTPUT_DIRS["precipitacion"] / f"precip_anual_{ciudad.nombre}.png",
-                    dpi=180, bbox_inches="tight")
-        plt.show()
+        guardar_grafico(OUTPUT_DIRS["precipitacion"] / f"precip_anual_{ciudad.nombre}.png")
 
 
 # ── H2: Días con precipitación intensa ────────────────────────────────────────
@@ -60,14 +65,14 @@ def graficar_dias_intensos(resultados: list[dict]) -> None:
         dias   = np.array(r["dias"])
 
         fig, ax = plt.subplots(figsize=(14, 6))
-        fig.patch.set_facecolor("#F8F9FA")
+        fig.patch.set_facecolor("#0E0E0E")
 
         colors = ["#DC2626" if d >= 10 else "#F59E0B" if d >= 5
                   else "#10B981" if d >= 1 else "#94A3B8" for d in dias]
         ax.bar(años, dias, color=colors, alpha=0.75, width=0.8, zorder=2)
 
         if len(dias) >= WINDOW:
-            mm      = _media_movil(dias)
+            mm      = media_movil(dias)
             años_mm = np.array(años)[WINDOW - 1:]
             ax.plot(años_mm, mm, color="#1E3A8A", linewidth=2.5,
                     label=f"Media móvil {WINDOW} años", zorder=3)
@@ -83,10 +88,7 @@ def graficar_dias_intensos(resultados: list[dict]) -> None:
                             textcoords="offset points", ha="center",
                             fontsize=9, color="#991B1B", fontweight="bold")
 
-        plt.tight_layout()
-        plt.savefig(OUTPUT_DIRS["precipitacion"] / f"dias_intensos_{ciudad.nombre}.png",
-                    dpi=180, bbox_inches="tight")
-        plt.show()
+        guardar_grafico(OUTPUT_DIRS["precipitacion"] / f"dias_intensos_{ciudad.nombre}.png")
 
 
 # ── H2: Heatmap precipitación mensual por año (seaborn) ───────────────────────
@@ -109,7 +111,7 @@ def graficar_heatmap_precip_mensual(ciudades: list) -> None:
         pivot.columns = MESES
 
         fig, ax = plt.subplots(figsize=(14, 10))
-        fig.patch.set_facecolor("#F8F9FA")
+        fig.patch.set_facecolor("#0E0E0E")
 
         sns.heatmap(
             pivot, ax=ax,
@@ -118,16 +120,18 @@ def graficar_heatmap_precip_mensual(ciudades: list) -> None:
             cbar_kws={"label": "Precipitación total mensual (mm)", "shrink": 0.6},
             yticklabels=10,
         )
+        ax.collections[0].set_alpha(0.82)
+        ax.set_facecolor("#0E0E0E")
 
         ax.set_title(
             f"Precipitación mensual por año\n{ciudad.nombre.capitalize()} ({AÑO_INICIO}–{AÑO_FIN})",
-            fontsize=14, fontweight="bold", color="#021B2E", pad=15,
+            fontsize=14, fontweight="bold", color="#D0D0D0", pad=15,
         )
-        ax.set_xlabel("Mes", fontsize=11, color="#021B2E")
-        ax.set_ylabel("Año", fontsize=11, color="#021B2E")
-        ax.tick_params(colors="#475569")
+        ax.set_xlabel("Mes", fontsize=11, color="#D0D0D0")
+        ax.set_ylabel("Año", fontsize=11, color="#D0D0D0")
+        ax.tick_params(colors="#686868")
+        for child_ax in ax.figure.axes:
+            child_ax.set_facecolor("#0E0E0E")
+            child_ax.tick_params(colors="#686868")
 
-        plt.tight_layout()
-        plt.savefig(OUTPUT_DIRS["precipitacion"] / f"heatmap_precip_{ciudad.nombre}.png",
-                    dpi=180, bbox_inches="tight")
-        plt.show()
+        guardar_grafico(OUTPUT_DIRS["precipitacion"] / f"heatmap_precip_{ciudad.nombre}.png")
