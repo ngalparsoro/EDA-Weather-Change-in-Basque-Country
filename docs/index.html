@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cambio Climático en Euskal Herria · 1940–2025</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #0C0C0C;
+      --border: rgba(255,255,255,0.07);
+      --text:   #ACACAC;
+      --strong: #E0E0E0;
+      --muted:  #525252;
+      --max:    860px;
+
+      --h1: #A86868;
+      --h2: #6888A8;
+      --h3: #68A878;
+      --h4: #A89068;
+      --h5: #8870B0;
+      --h6: #7898B0;
+      --mar:#68A0A0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.72;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    strong { color: var(--strong); font-weight: 500; }
+
+    /* ── Nav ─────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 100;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      background: rgba(12,12,12,0.94);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      gap: 2rem;
+    }
+    .nav-brand {
+      font-size: 0.72em;
+      font-weight: 500;
+      color: var(--strong);
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      margin-right: auto;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 0;
+    }
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      padding: 0 0.85rem;
+      font-size: 0.68em;
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1.5px solid transparent;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover  { color: var(--text); }
+    .nav-links a.active { color: var(--strong); border-bottom-color: var(--strong); }
+
+    /* ── Hero ────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 4rem;
+    }
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      background: url('img/photo-1558453217-ef7b5d462c9c.webp') center 40% / cover no-repeat;
+      opacity: 0.5;
+    }
+    .hero-fade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        rgba(12,12,12,1)    0%,
+        rgba(12,12,12,0.6)  25%,
+        rgba(12,12,12,0.15) 60%,
+        rgba(12,12,12,0)    100%);
+    }
+    .hero-inner {
+      position: relative;
+      max-width: var(--max);
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 2rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.7em;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+    .hero-title {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 300;
+      color: var(--strong);
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.4rem;
+    }
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .hero-pill {
+      font-size: 0.7em;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      padding: 0.22em 0.7em;
+      border: 1px solid currentColor;
+      border-radius: 2px;
+      opacity: 0.6;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 1.8rem;
+      right: 2rem;
+      font-size: 0.62em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Layout ──────────────────────────────────────── */
+    main { padding-top: 48px; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── Sections ────────────────────────────────────── */
+    .sec {
+      padding: 5rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .sec-head { margin-bottom: 2.8rem; }
+    .sec-tag {
+      display: inline-block;
+      font-size: 0.62em;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      padding: 0.17em 0.55em;
+      border-radius: 2px;
+      opacity: 0.75;
+      margin-bottom: 0.75rem;
+    }
+    .sec-title {
+      font-size: 1.55em;
+      font-weight: 300;
+      color: var(--strong);
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.5rem;
+    }
+    .sec-desc {
+      font-size: 0.86em;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.7;
+    }
+
+    /* ── Stat strip ──────────────────────────────────── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 2.8rem;
+    }
+    .stat {
+      padding: 1.1rem 1.3rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-label {
+      font-size: 0.58em;
+      font-weight: 500;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .stat-value {
+      font-size: 1.7em;
+      font-weight: 300;
+      color: var(--strong);
+      line-height: 1;
+    }
+
+    /* ── Table ───────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82em;
+      font-weight: 300;
+    }
+    thead th {
+      font-size: 0.75em;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.5rem 0.4rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    tbody td {
+      padding: 0.5rem 0.4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.035);
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    .dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+      opacity: 0.65;
+    }
+
+    /* ── Methods ─────────────────────────────────────── */
+    .methods {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 2.8rem;
+    }
+    .methods h3 {
+      font-size: 0.66em;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+    .methods ul { list-style: none; }
+    .methods li {
+      font-size: 0.84em;
+      padding: 0.38rem 0 0.38rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .methods li:last-child { border-bottom: none; }
+    .methods li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      width: 3px; height: 1px;
+      background: var(--muted);
+    }
+
+    /* ── H-strip ─────────────────────────────────────── */
+    .hstrip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .hcell {
+      padding: 0.9rem 0.8rem;
+      border-right: 1px solid var(--border);
+      border-top: 2px solid;
+    }
+    .hcell:last-child { border-right: none; }
+    .hcell-id {
+      font-size: 0.62em;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .hcell-name {
+      font-size: 0.72em;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ── City switcher ───────────────────────────────── */
+    .switcher-bar {
+      position: sticky;
+      top: 48px;
+      z-index: 10;
+      background: rgba(12,12,12,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.65rem 0;
+      margin: 2.4rem 0;
+    }
+    .switcher {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+    }
+    .cbtn {
+      padding: 0.25em 0.75em;
+      border-radius: 2px;
+      border: 1px solid transparent;
+      font-size: 0.7em;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      transition: color 0.12s, border-color 0.12s;
+    }
+    .cbtn:hover { color: var(--text); }
+    .cbtn.on    { color: var(--strong); border-color: currentColor; }
+
+    /* ── Images ──────────────────────────────────────── */
+    .fig { margin: 2.2rem 0; }
+
+    /* Single-image figures → card */
+    .fig:not(:has(.pair)) {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #0F0F0F;
+      overflow: hidden;
+    }
+    .fig-label {
+      font-size: 0.62em;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      padding: 0.5rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .fig img, img.full {
+      width: 100%;
+      display: block;
+      border-radius: 0;
+    }
+
+    /* Pair figures → each column is its own card */
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .pair > div {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #0F0F0F;
+      overflow: hidden;
+    }
+    .pair img { width: 100%; display: block; border-radius: 0; }
+
+    /* ── Conclusions ─────────────────────────────────── */
+    .concl {
+      margin-top: 3.8rem;
+      padding-top: 2.4rem;
+      border-top: 1px solid var(--border);
+    }
+    .concl-bar {
+      display: flex;
+      align-items: baseline;
+      gap: 1.4rem;
+      margin-bottom: 2rem;
+    }
+    .concl-label {
+      font-size: 0.66em;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .verdict {
+      font-size: 0.66em;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding-bottom: 0.12em;
+      border-bottom: 1px solid currentColor;
+    }
+    .ok      { color: var(--h3); }
+    .partial { color: var(--h4); }
+
+    .findings {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 3rem;
+    }
+    .finding {
+      display: flex;
+      gap: 1rem;
+      padding: 0.95rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .findings .finding:nth-last-child(-n+2) { border-bottom: none; }
+    .fnum {
+      font-size: 0.62em;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      flex-shrink: 0;
+      margin-top: 0.2em;
+      opacity: 0.55;
+    }
+    .ftext {
+      font-size: 0.84em;
+      font-weight: 300;
+      line-height: 1.62;
+    }
+
+    /* ── Final list ──────────────────────────────────── */
+    .final { list-style: none; margin-top: 1.8rem; }
+    .final li {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.86em;
+      font-weight: 300;
+      line-height: 1.65;
+    }
+    .final li:last-child { border-bottom: none; }
+    .ftag {
+      font-size: 0.68em;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      margin-top: 0.2em;
+      opacity: 0.75;
+      min-width: 2.2em;
+    }
+
+    /* ── Photo bg (conclusiones finales) ─────────────── */
+    .photo-bg {
+      position: relative;
+    }
+    .photo-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('img/photo-1558453217-ef7b5d462c9c.webp') center / cover no-repeat;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+    .photo-bg .wrap { position: relative; }
+
+    /* ── Footer ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.67em;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Móvil ───────────────────────────────────────── */
+    @media (max-width: 640px) {
+      nav { padding: 0; gap: 0; }
+      .nav-brand { display: none; }
+      .nav-links {
+        flex: 1;
+        min-width: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+        padding: 0 0.5rem;
+      }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links a { white-space: nowrap; padding: 0 0.6rem; }
+
+      .wrap, .hero-inner, .switcher { padding: 0 1rem; }
+      .hero-scroll { right: 1rem; }
+      .sec { padding: 3.5rem 0; }
+
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(2n)   { border-right: none; }
+      .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+
+      table { font-size: 0.74em; }
+      thead th, tbody td { padding: 0.45rem 0.25rem; }
+
+      .methods { grid-template-columns: 1fr; gap: 1.6rem; }
+
+      .hstrip { grid-template-columns: repeat(3, 1fr); }
+      .hcell:nth-child(3n) { border-right: none; }
+
+      .pair { grid-template-columns: 1fr; }
+
+      .concl-bar { flex-wrap: wrap; gap: 0.5rem 1.4rem; }
+      .findings  { grid-template-columns: 1fr; }
+      .findings .finding:nth-last-child(2) { border-bottom: 1px solid var(--border); }
+
+      footer { padding: 2rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">Euskal Herria · Clima 1940–2025</span>
+  <ul class="nav-links">
+    <li><a href="#datos">Datos</a></li>
+    <li><a href="#h1">Temperaturas</a></li>
+    <li><a href="#h2">Precipitación</a></li>
+    <li><a href="#h3">Ciudades</a></li>
+    <li><a href="#h4">Extremos</a></li>
+    <li><a href="#h5">Estacionalidad</a></li>
+    <li><a href="#h6">Viento</a></li>
+    <li><a href="#mar">Geografía</a></li>
+    <li><a href="#fin">Conclusiones</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-photo"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Análisis exploratorio de datos climáticos</p>
+    <h1 class="hero-title">Cambio climático<br>en Euskal Herria</h1>
+    <div class="hero-pills">
+      <span class="hero-pill" style="color:#4FAF8A">Bilbo</span>
+      <span class="hero-pill" style="color:#5898C0">Donostia</span>
+      <span class="hero-pill" style="color:#B86060">Gasteiz</span>
+      <span class="hero-pill" style="color:#C09840">Iruña</span>
+      <span class="hero-pill" style="color:#7070B8">Baiona</span>
+      <span class="hero-pill" style="color:#8868B8">Arrasate</span>
+      <span class="hero-pill" style="color:#B86898">Maule</span>
+    </div>
+  </div>
+  <span class="hero-scroll">Desplazar ↓</span>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════
+  DATOS
+═══════════════════════════════════════════════════ -->
+<div id="datos" class="sec">
+  <div class="wrap">
+
+    <div class="sec-head">
+      <div class="sec-title">El proyecto</div>
+      <p class="sec-desc">Registros climáticos diarios de siete ciudades de Euskal Herria, obtenidos de <strong>Open-Meteo (ERA5)</strong>. El análisis cubre 86 años e incluye temperatura, precipitación y viento.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="stat-label">Período</span><div class="stat-value">1940–2025</div></div>
+      <div class="stat"><span class="stat-label">Ciudades</span><div class="stat-value">7</div></div>
+      <div class="stat"><span class="stat-label">Registros</span><div class="stat-value">219 k</div></div>
+      <div class="stat"><span class="stat-label">Variables</span><div class="stat-value">5</div></div>
+    </div>
+
+    <table style="margin-bottom:2.8rem">
+      <thead>
+        <tr>
+          <th>Ciudad</th><th>Latitud</th><th>Longitud</th>
+          <th>Dist. mar</th><th>Altitud</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="dot" style="background:#4FAF8A"></span>Bilbo</td><td>43.26° N</td><td>2.94° O</td><td>8 km</td><td>19 m</td></tr>
+        <tr><td><span class="dot" style="background:#5898C0"></span>Donostia</td><td>43.32° N</td><td>1.98° O</td><td>3 km</td><td>5 m</td></tr>
+        <tr><td><span class="dot" style="background:#B86060"></span>Gasteiz</td><td>42.85° N</td><td>2.67° O</td><td>57 km</td><td>524 m</td></tr>
+        <tr><td><span class="dot" style="background:#C09840"></span>Iruña</td><td>42.81° N</td><td>1.65° O</td><td>84 km</td><td>449 m</td></tr>
+        <tr><td><span class="dot" style="background:#7070B8"></span>Baiona</td><td>43.49° N</td><td>1.47° O</td><td>8 km</td><td>6 m</td></tr>
+        <tr><td><span class="dot" style="background:#8868B8"></span>Arrasate</td><td>43.08° N</td><td>2.49° O</td><td>31 km</td><td>339 m</td></tr>
+        <tr><td><span class="dot" style="background:#B86898"></span>Maule</td><td>43.22° N</td><td>0.89° O</td><td>89 km</td><td>144 m</td></tr>
+      </tbody>
+    </table>
+
+    <div class="methods">
+      <div>
+        <h3>Variables</h3>
+        <ul>
+          <li>Temperatura media diaria (°C)</li>
+          <li>Temperatura máxima diaria (°C)</li>
+          <li>Temperatura mínima diaria (°C)</li>
+          <li>Precipitación diaria (mm)</li>
+          <li>Velocidad máxima del viento (km/h)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Técnicas estadísticas</h3>
+        <ul>
+          <li>Regresión lineal OLS</li>
+          <li>Test Mann-Kendall</li>
+          <li>Percentiles P90 / P95</li>
+          <li>Clustering jerárquico + PCA</li>
+          <li>Correlación de Pearson</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hstrip">
+      <div class="hcell" style="border-color:var(--h1)">
+        <span class="hcell-id" style="color:var(--h1)">H1</span>
+        <span class="hcell-name">Aumento de temperaturas</span>
+      </div>
+      <div class="hcell" style="border-color:var(--h2)">
+        <span class="hcell-id" style="color:var(--h2)">H2</span>
+        <span class="hcell-name">Reducción de precipitaciones</span>
+      </div>
+      <div class="hcell" style="border-color:var(--h3)">
+        <span class="hcell-id" style="color:var(--h3)">H3</span>
+        <span class="hcell-name">Diferencias entre ciudades</span>
+      </div>
+      <div class="hcell" style="border-color:var(--h4)">
+        <span class="hcell-id" style="color:var(--h4)">H4</span>
+        <span class="hcell-name">Mayor frecuencia de extremos</span>
+      </div>
+      <div class="hcell" style="border-color:var(--h5)">
+        <span class="hcell-id" style="color:var(--h5)">H5</span>
+        <span class="hcell-name">Estacionalidad más marcada</span>
+      </div>
+      <div class="hcell" style="border-color:var(--h6)">
+        <span class="hcell-id" style="color:var(--h6)">H6</span>
+        <span class="hcell-name">Régimen de vientos</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+  H1 — AUMENTO DE TEMPERATURAS
+═══════════════════════════════════════════════════ -->
+<div id="h1" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag" style="color:var(--h1)">H1</span>
+      <div class="sec-title">Aumento de temperaturas</div>
+      <p class="sec-desc">Tendencia de la temperatura media anual y su anomalía respecto al período de referencia 1961–1990 (estándar OMM).</p>
+    </div>
+    <div class="fig">
+      <p class="fig-label">Anomalía de temperatura media anual — todas las ciudades</p>
+      <img loading="lazy" src="img/temp_media/anomalia_comparativa.webp" class="full">
+    </div>
+  </div>
+
+  <div class="switcher-bar">
+    <div class="switcher" data-g="h1">
+      <button class="cbtn on"  data-city="bilbo"    style="color:#4FAF8A">Bilbo</button>
+      <button class="cbtn"     data-city="donostia" style="color:#5898C0">Donostia</button>
+      <button class="cbtn"     data-city="gasteiz"  style="color:#B86060">Gasteiz</button>
+      <button class="cbtn"     data-city="iruna"    style="color:#C09840">Iruña</button>
+      <button class="cbtn"     data-city="baiona"   style="color:#7070B8">Baiona</button>
+      <button class="cbtn"     data-city="arrasate" style="color:#8868B8">Arrasate</button>
+      <button class="cbtn"     data-city="maule"    style="color:#B86898">Maule</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="fig">
+      <p class="fig-label">Temperatura media anual con tendencia OLS</p>
+      <img loading="lazy" data-g="h1" data-tpl="img/temp_media/temp_media_anual_{c}.webp"
+           src="img/temp_media/temp_media_anual_bilbo.webp" class="full">
+    </div>
+    <div class="fig">
+      <p class="fig-label">Anomalía respecto a la media 1961–1990</p>
+      <img loading="lazy" data-g="h1" data-tpl="img/temp_media/anomalia_{c}.webp"
+           src="img/temp_media/anomalia_bilbo.webp" class="full">
+    </div>
+
+    <div class="concl">
+      <div class="concl-bar">
+        <span class="concl-label">Conclusiones · H1</span>
+        <span class="verdict ok">✓ Confirmada</span>
+      </div>
+      <div class="findings">
+        <div class="finding">
+          <span class="fnum" style="color:var(--h1)">01</span>
+          <p class="ftext">Tendencia positiva <strong>significativa en las 7 ciudades</strong> (Mann-Kendall p &lt; 0.05).</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h1)">02</span>
+          <p class="ftext">Incremento de <strong>+0.2–0.3 °C por década</strong>, más pronunciado en ciudades de interior.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h1)">03</span>
+          <p class="ftext">La anomalía positiva <strong>se acelera a partir de 1980</strong> en todas las estaciones.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h1)">04</span>
+          <p class="ftext">Los <strong>años más cálidos del registro</strong> se concentran en el período 2000–2025.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+  H2 — PRECIPITACIONES
+═══════════════════════════════════════════════════ -->
+<div id="h2" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag" style="color:var(--h2)">H2</span>
+      <div class="sec-title">Reducción de precipitaciones</div>
+      <p class="sec-desc">Evolución de la lluvia anual, las rachas secas y los episodios de precipitación intensa.</p>
+    </div>
+    <div class="fig">
+      <p class="fig-label">Rachas secas — comparativa entre ciudades</p>
+      <img loading="lazy" src="img/precipitacion/racha_seca_comparativa.webp" class="full">
+    </div>
+  </div>
+
+  <div class="switcher-bar">
+    <div class="switcher" data-g="h2">
+      <button class="cbtn on"  data-city="bilbo"    style="color:#4FAF8A">Bilbo</button>
+      <button class="cbtn"     data-city="donostia" style="color:#5898C0">Donostia</button>
+      <button class="cbtn"     data-city="gasteiz"  style="color:#B86060">Gasteiz</button>
+      <button class="cbtn"     data-city="iruna"    style="color:#C09840">Iruña</button>
+      <button class="cbtn"     data-city="baiona"   style="color:#7070B8">Baiona</button>
+      <button class="cbtn"     data-city="arrasate" style="color:#8868B8">Arrasate</button>
+      <button class="cbtn"     data-city="maule"    style="color:#B86898">Maule</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="fig">
+      <p class="fig-label">Precipitación total anual</p>
+      <img loading="lazy" data-g="h2" data-tpl="img/precipitacion/precip_anual_{c}.webp"
+           src="img/precipitacion/precip_anual_bilbo.webp" class="full">
+    </div>
+    <div class="fig">
+      <p class="fig-label">Heatmap precipitación mensual</p>
+      <img loading="lazy" data-g="h2" data-tpl="img/precipitacion/heatmap_precip_{c}.webp"
+           src="img/precipitacion/heatmap_precip_bilbo.webp" class="full">
+    </div>
+    <div class="fig">
+      <p class="fig-label">Días con precipitación intensa (&gt; 30 mm)</p>
+      <img loading="lazy" data-g="h2" data-tpl="img/precipitacion/dias_intensos_{c}.webp"
+           src="img/precipitacion/dias_intensos_bilbo.webp" class="full">
+    </div>
+
+    <div class="concl">
+      <div class="concl-bar">
+        <span class="concl-label">Conclusiones · H2</span>
+        <span class="verdict partial">⚠ Parcialmente confirmada</span>
+      </div>
+      <div class="findings">
+        <div class="finding">
+          <span class="fnum" style="color:var(--h2)">01</span>
+          <p class="ftext">Tendencia negativa en la mayoría de ciudades, aunque <strong>estadísticamente débil</strong>.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h2)">02</span>
+          <p class="ftext">Las <strong>rachas secas no muestran tendencia significativa</strong> en ninguna ciudad (Mann-Kendall p &gt; 0.05). Las más largas se dan en el interior: Iruña y Gasteiz rondan los 20–25 días de racha máxima al año, frente a 14–17 en la costa.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h2)">03</span>
+          <p class="ftext">Los episodios intensos (&gt; 30 mm) <strong>no muestran reducción clara</strong>: podrían estar aumentando.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h2)">04</span>
+          <p class="ftext">La <strong>alta variabilidad interanual</strong> dificulta aislar la señal climática a largo plazo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+  H3 — DIFERENCIAS ENTRE CIUDADES
+═══════════════════════════════════════════════════ -->
+<div id="h3" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag" style="color:var(--h3)">H3</span>
+      <div class="sec-title">Diferencias entre ciudades</div>
+      <p class="sec-desc">Comparativa de temperatura y precipitación, y clustering jerárquico para agrupar las ciudades según su perfil climático.</p>
+    </div>
+    <div class="fig">
+      <div class="pair">
+        <div>
+          <p class="fig-label">Temperatura media anual</p>
+          <img loading="lazy" src="img/comp_ciudades/comp_temp_ciudades.webp">
+        </div>
+        <div>
+          <p class="fig-label">Precipitación anual</p>
+          <img loading="lazy" src="img/comp_ciudades/comp_precip_ciudades.webp">
+        </div>
+      </div>
+    </div>
+    <div class="fig">
+      <div class="pair">
+        <div>
+          <p class="fig-label">Dendrograma de similitud climática</p>
+          <img loading="lazy" src="img/comp_ciudades/dendrograma_ciudades.webp">
+        </div>
+        <div>
+          <p class="fig-label">Heatmap del perfil climático</p>
+          <img loading="lazy" src="img/comp_ciudades/heatmap_perfil_climatico.webp">
+        </div>
+      </div>
+    </div>
+
+    <div class="concl">
+      <div class="concl-bar">
+        <span class="concl-label">Conclusiones · H3</span>
+        <span class="verdict ok">✓ Confirmada</span>
+      </div>
+      <div class="findings">
+        <div class="finding">
+          <span class="fnum" style="color:var(--h3)">01</span>
+          <p class="ftext"><strong>Dos grupos bien definidos</strong>: costa atlántica (Bilbo, Donostia, Baiona) e interior (Gasteiz, Iruña, Arrasate, Maule).</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h3)">02</span>
+          <p class="ftext">La <strong>distancia al mar y la altitud</strong> son los principales factores del gradiente climático.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h3)">03</span>
+          <p class="ftext">El <strong>dendrograma separa costa e interior con claridad</strong>: la distancia entre ambos grupos (~10) casi duplica la mayor distancia dentro de un mismo grupo (~5.6).</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h3)">04</span>
+          <p class="ftext">Dentro del interior, <strong>Arrasate</strong> se agrupa con Gasteiz e Iruña, y <strong>Maule</strong> es la ciudad más singular: la mayor variabilidad interanual y la tendencia de calentamiento más alta.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+  H4 — TEMPERATURAS EXTREMAS
+═══════════════════════════════════════════════════ -->
+<div id="h4" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag" style="color:var(--h4)">H4</span>
+      <div class="sec-title">Frecuencia de temperaturas extremas</div>
+      <p class="sec-desc">Evolución de los días con Tmax &gt; 35 °C, las olas de calor y las noches tropicales (Tmin ≥ 20 °C).</p>
+    </div>
+    <div class="fig">
+      <div class="pair">
+        <div>
+          <p class="fig-label">Olas de calor (Tmax &gt; 35°C · ≥ 3 días)</p>
+          <img loading="lazy" src="img/extremos_35/calendario_olas_calor.webp">
+        </div>
+        <div>
+          <p class="fig-label">Episodios sobre el percentil 95</p>
+          <img loading="lazy" src="img/extremos_35/calendario_olas_p95.webp">
+        </div>
+      </div>
+    </div>
+    <div class="fig">
+      <p class="fig-label">Noches tropicales (Tmin ≥ 20 °C)</p>
+      <img loading="lazy" src="img/noches_tropicales/calendario_noches_tropicales.webp" class="full">
+    </div>
+    <div class="fig">
+      <p class="fig-label">Comparativa de noches tropicales entre ciudades</p>
+      <img loading="lazy" src="img/noches_tropicales/noches_tropicales_comparativa.webp" class="full">
+    </div>
+  </div>
+
+  <div class="switcher-bar">
+    <div class="switcher" data-g="h4">
+      <button class="cbtn on"  data-city="bilbo"    style="color:#4FAF8A">Bilbo</button>
+      <button class="cbtn"     data-city="donostia" style="color:#5898C0">Donostia</button>
+      <button class="cbtn"     data-city="gasteiz"  style="color:#B86060">Gasteiz</button>
+      <button class="cbtn"     data-city="iruna"    style="color:#C09840">Iruña</button>
+      <button class="cbtn"     data-city="baiona"   style="color:#7070B8">Baiona</button>
+      <button class="cbtn"     data-city="arrasate" style="color:#8868B8">Arrasate</button>
+      <button class="cbtn"     data-city="maule"    style="color:#B86898">Maule</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="fig">
+      <p class="fig-label">Días con Tmax &gt; 35 °C por año</p>
+      <img loading="lazy" data-g="h4" data-tpl="img/extremos_35/extremos_{c}.webp"
+           src="img/extremos_35/extremos_bilbo.webp" class="full">
+    </div>
+    <div class="fig">
+      <p class="fig-label">Noches tropicales (≥ 20 °C) y muy cálidas (≥ 25 °C)</p>
+      <img loading="lazy" data-g="h4" data-tpl="img/noches_tropicales/noches_{c}.webp"
+           src="img/noches_tropicales/noches_bilbo.webp" class="full">
+    </div>
+
+    <div class="concl">
+      <div class="concl-bar">
+        <span class="concl-label">Conclusiones · H4</span>
+        <span class="verdict ok">✓ Confirmada</span>
+      </div>
+      <div class="findings">
+        <div class="finding">
+          <span class="fnum" style="color:var(--h4)">01</span>
+          <p class="ftext">Los días con Tmax &gt; 35 °C se han <strong>multiplicado desde 1980</strong>, con aceleración en la última década.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h4)">02</span>
+          <p class="ftext">Las olas de calor son <strong>más frecuentes, más largas e intensas</strong> en el período 2000–2025.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h4)">03</span>
+          <p class="ftext">Los años <strong>2003, 2019 y 2022</strong> destacan como picos históricos en toda la región.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h4)">04</span>
+          <p class="ftext">Las ciudades <strong>costeras y de baja altitud</strong> registran menos extremos por su doble protección geográfica.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h4)">05</span>
+          <p class="ftext">Las <strong>noches tropicales</strong> (Tmin ≥ 20 °C) aumentan sobre todo en la costa: en Baiona pasan de 2.5 al año (1950–1979) a 13.5 en 2016–2025. En el interior siguen siendo escasas, entre 1 y 5 al año.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h4)">06</span>
+          <p class="ftext">Las <strong>noches muy cálidas</strong> (Tmin ≥ 25 °C) siguen siendo excepcionales: solo una en todo el registro (Donostia, 2022).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+  H5 — ESTACIONALIDAD
+═══════════════════════════════════════════════════ -->
+<div id="h5" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag" style="color:var(--h5)">H5</span>
+      <div class="sec-title">Estacionalidad más marcada</div>
+      <p class="sec-desc">Evolución del ciclo estacional, la duración del verano meteorológico y la amplitud térmica anual.</p>
+    </div>
+    <div class="fig">
+      <div class="pair">
+        <div>
+          <p class="fig-label">Duración del verano meteorológico</p>
+          <img loading="lazy" src="img/estacionalidad/verano_comparativa.webp">
+        </div>
+        <div>
+          <p class="fig-label">Inicio y fin del verano</p>
+          <img loading="lazy" src="img/estacionalidad/inicio_fin_verano_comparativa.webp">
+        </div>
+      </div>
+    </div>
+    <div class="fig">
+      <div class="pair">
+        <div>
+          <p class="fig-label">Amplitud térmica anual por ciudad</p>
+          <img loading="lazy" src="img/estacionalidad/amplitud_termica_ciudades.webp">
+        </div>
+        <div>
+          <p class="fig-label">Duración del verano por décadas</p>
+          <img loading="lazy" src="img/estacionalidad/boxplot_verano_decadas.webp">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="switcher-bar">
+    <div class="switcher" data-g="h5">
+      <button class="cbtn on"  data-city="bilbo"    style="color:#4FAF8A">Bilbo</button>
+      <button class="cbtn"     data-city="donostia" style="color:#5898C0">Donostia</button>
+      <button class="cbtn"     data-city="gasteiz"  style="color:#B86060">Gasteiz</button>
+      <button class="cbtn"     data-city="iruna"    style="color:#C09840">Iruña</button>
+      <button class="cbtn"     data-city="baiona"   style="color:#7070B8">Baiona</button>
+      <button class="cbtn"     data-city="arrasate" style="color:#8868B8">Arrasate</button>
+      <button class="cbtn"     data-city="maule"    style="color:#B86898">Maule</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="fig">
+      <p class="fig-label">Ciclo estacional mensual</p>
+      <img loading="lazy" data-g="h5" data-tpl="img/estacionalidad/estacionalidad_{c}.webp"
+           src="img/estacionalidad/estacionalidad_bilbo.webp" class="full">
+    </div>
+
+    <div class="concl">
+      <div class="concl-bar">
+        <span class="concl-label">Conclusiones · H5</span>
+        <span class="verdict ok">✓ Confirmada</span>
+      </div>
+      <div class="findings">
+        <div class="finding">
+          <span class="fnum" style="color:var(--h5)">01</span>
+          <p class="ftext">El verano se <strong>alarga</strong>, sobre todo en la costa: la racha anual más larga de días con Tmedia &gt; 20 °C crece entre 7 y 9 días desde 1940 en Bilbo, Donostia y Baiona (p &lt; 0.01).</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h5)">02</span>
+          <p class="ftext">La <strong>amplitud térmica aumenta</strong> en ciudades de interior y mayor altitud.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h5)">03</span>
+          <p class="ftext">Las ciudades <strong>costeras y de baja altitud</strong> mantienen una estacionalidad más suave.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h5)">04</span>
+          <p class="ftext">Las fechas de <strong>inicio y fin del verano</strong> no se desplazan de forma significativa en ninguna ciudad (p &gt; 0.05): el cambio está en la duración, no en el calendario.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+  H6 — RÉGIMEN DE VIENTOS
+═══════════════════════════════════════════════════ -->
+<div id="h6" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag" style="color:var(--h6)">H6</span>
+      <div class="sec-title">Régimen de vientos</div>
+      <p class="sec-desc">Evolución de la velocidad máxima diaria del viento (media anual), los días de viento fuerte y el ciclo estacional en costa e interior.</p>
+    </div>
+    <div class="fig">
+      <p class="fig-label">Ciclo estacional del viento — todas las ciudades</p>
+      <img loading="lazy" src="img/viento/perfil_mensual_viento.webp" class="full">
+    </div>
+    <div class="fig">
+      <p class="fig-label">Perfil mensual por períodos históricos</p>
+      <img loading="lazy" src="img/viento/periodos_viento_ciudades.webp" class="full">
+    </div>
+  </div>
+
+  <div class="switcher-bar">
+    <div class="switcher" data-g="h6">
+      <button class="cbtn on"  data-city="bilbo"    style="color:#4FAF8A">Bilbo</button>
+      <button class="cbtn"     data-city="donostia" style="color:#5898C0">Donostia</button>
+      <button class="cbtn"     data-city="gasteiz"  style="color:#B86060">Gasteiz</button>
+      <button class="cbtn"     data-city="iruna"    style="color:#C09840">Iruña</button>
+      <button class="cbtn"     data-city="baiona"   style="color:#7070B8">Baiona</button>
+      <button class="cbtn"     data-city="arrasate" style="color:#8868B8">Arrasate</button>
+      <button class="cbtn"     data-city="maule"    style="color:#B86898">Maule</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="fig">
+      <p class="fig-label">Velocidad máxima diaria (media anual) con tendencia OLS</p>
+      <img loading="lazy" data-g="h6" data-tpl="img/viento/viento_anual_{c}.webp"
+           src="img/viento/viento_anual_bilbo.webp" class="full">
+    </div>
+    <div class="fig">
+      <p class="fig-label">Días con viento fuerte (&gt; 50 km/h) por año</p>
+      <img loading="lazy" data-g="h6" data-tpl="img/viento/dias_viento_fuerte_{c}.webp"
+           src="img/viento/dias_viento_fuerte_bilbo.webp" class="full">
+    </div>
+
+    <div class="concl">
+      <div class="concl-bar">
+        <span class="concl-label">Conclusiones · H6</span>
+        <span class="verdict partial">⚠ Tendencia solo en el interior</span>
+      </div>
+      <div class="findings">
+        <div class="finding">
+          <span class="fnum" style="color:var(--h6)">01</span>
+          <p class="ftext">El viento <strong>aumenta en las 4 ciudades de interior</strong> (Gasteiz, Iruña, Arrasate y Maule; Mann-Kendall p &lt; 0.01), entre +0.1 y +0.3 km/h por década.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h6)">02</span>
+          <p class="ftext">Los <strong>días de viento fuerte</strong> (&gt; 50 km/h) son raros y se concentran en <strong>Baiona</strong> (~1 al año); en el resto de ciudades apenas aparecen.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h6)">03</span>
+          <p class="ftext">El <strong>ciclo estacional</strong> cambia entre costa e interior: en la costa el viento es máximo en invierno (diciembre-enero); en el interior el pico llega en marzo y el ciclo es más plano.</p>
+        </div>
+        <div class="finding">
+          <span class="fnum" style="color:var(--h6)">04</span>
+          <p class="ftext">En la <strong>costa no hay tendencia</strong> significativa. Al tratarse de datos de reanálisis (ERA5), la subida del interior convendría contrastarla con estaciones de medida.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+  GEOGRAFÍA Y CLIMA — mar + altitud
+═══════════════════════════════════════════════════ -->
+<div id="mar" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag" style="color:var(--mar)">Análisis</span>
+      <div class="sec-title">Factores geográficos del clima</div>
+      <p class="sec-desc">La distancia al mar y la altitud son los dos ejes que explican la mayor parte de la variabilidad climática entre ciudades.</p>
+    </div>
+
+    <div class="fig">
+      <p class="fig-label">Correlación distancia al mar · Pearson + IC 95%</p>
+      <img loading="lazy" src="img/correlacion_mar/correlacion_distancia_mar.webp" class="full">
+    </div>
+
+    <div class="fig">
+      <p class="fig-label">Correlación altitud · Pearson + IC 95%</p>
+      <img loading="lazy" src="img/correlacion_mar/correlacion_altitud.webp" class="full">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+  CONCLUSIONES
+═══════════════════════════════════════════════════ -->
+<div id="fin" class="sec photo-bg">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-title">Conclusiones</div>
+      <p class="sec-desc">Síntesis de los principales hallazgos del análisis exploratorio.</p>
+    </div>
+
+    <ul class="final">
+      <li>
+        <span class="ftag" style="color:var(--h1)">H1</span>
+        <span>Calentamiento <strong>confirmado y acelerado</strong> en las 7 ciudades: +0.2–0.3 °C/década. Los años más cálidos del registro se concentran en 2000–2025.</span>
+      </li>
+      <li>
+        <span class="ftag" style="color:var(--h2)">H2</span>
+        <span>Reducción de precipitaciones con <strong>señal débil</strong>, pero rachas secas más largas en el interior. Los episodios intensos no muestran reducción clara.</span>
+      </li>
+      <li>
+        <span class="ftag" style="color:var(--h3)">H3</span>
+        <span>Dos perfiles climáticos bien diferenciados: <strong>costa atlántica</strong> (suave, húmeda) vs. <strong>interior continental</strong> (extremos, más seca). La distancia al mar y la altitud son los factores clave.</span>
+      </li>
+      <li>
+        <span class="ftag" style="color:var(--h4)">H4</span>
+        <span>Los extremos térmicos se <strong>multiplican desde 2000</strong>: olas de calor más frecuentes, largas e intensas, especialmente en ciudades de interior y mayor altitud.</span>
+      </li>
+      <li>
+        <span class="ftag" style="color:var(--h5)">H5</span>
+        <span>El verano meteorológico <strong>se alarga</strong>, sobre todo en la costa (+7–9 días desde 1940), y la amplitud térmica aumenta en el interior, con efectos sobre ecosistemas y recursos hídricos.</span>
+      </li>
+      <li>
+        <span class="ftag" style="color:var(--h6)">H6</span>
+        <span>El régimen de vientos muestra un <strong>ciclo estacional distinto</strong> en costa (máximo en invierno) e interior (máximo en primavera). El viento aumenta ligeramente en el interior (+0.1–0.3 km/h por década) y no cambia en la costa.</span>
+      </li>
+      <li>
+        <span class="ftag" style="color:var(--mar)">Geo</span>
+        <span>La <strong>distancia al mar y la altitud</strong> actúan conjuntamente como reguladores climáticos: a mayor distancia y mayor elevación, mayor exposición al cambio climático.</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  Euskal Herria · Análisis Exploratorio de Datos Climáticos · 1940–2025 · Open-Meteo (ERA5)
+</footer>
+
+<script>
+  /* Imágenes incrustadas: solo existen en la versión exportada */
+  const IMGS = window.IMGS || {};
+  const ruta = p => IMGS[p] || p;
+
+  /* City switcher */
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.cbtn');
+    if (!btn) return;
+    const city = btn.dataset.city;
+    const bar  = btn.closest('[data-g]');
+    const g    = bar.dataset.g;
+
+    bar.querySelectorAll('.cbtn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+
+    document.querySelectorAll(`img[data-g="${g}"][data-tpl]`).forEach(img => {
+      img.src = ruta(img.dataset.tpl.replace('{c}', city));
+    });
+  });
+
+  /* Nav active link on scroll */
+  const ids   = ['datos','h1','h2','h3','h4','h5','h6','mar','fin'];
+  const links  = Object.fromEntries(
+    ids.map(id => [id, document.querySelector(`.nav-links a[href="#${id}"]`)])
+  );
+
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && links[e.target.id]) {
+        Object.values(links).forEach(a => a && a.classList.remove('active'));
+        links[e.target.id].classList.add('active');
+      }
+    });
+  }, { rootMargin: '-35% 0px -60% 0px' })
+  .observe ? ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          Object.values(links).forEach(a => a && a.classList.remove('active'));
+          links[id] && links[id].classList.add('active');
+        }
+      });
+    }, { rootMargin: '-35% 0px -60% 0px' }).observe(el);
+  }) : null;
+</script>
+</body>
+</html>
